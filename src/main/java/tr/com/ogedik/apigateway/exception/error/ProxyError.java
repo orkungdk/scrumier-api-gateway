@@ -3,17 +3,21 @@
  */
 package tr.com.ogedik.apigateway.exception.error;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author orkun.gedik
  */
 @Getter
-@Setter
-public class ProxyError {
+@AllArgsConstructor
+public enum ProxyError {
+
+  UNAUTHORIZED("Request is unauthorized!", 401),
+  TOKEN_EXPIRED("Token has been expired.", 401),
+  TOKEN_NOT_FOUND("Token is missing.", 401);
 
   private String message;
+  private int status;
 
-  private Throwable throwable;
 }

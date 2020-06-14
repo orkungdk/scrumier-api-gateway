@@ -11,27 +11,16 @@ import org.apache.logging.log4j.Logger;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
 
 /**
  * @author orkun.gedik
  */
-public class ErrorFilter extends ZuulFilter {
-
-  private static final Logger logger = LogManager.getLogger(ErrorFilter.class);
+public class ErrorFilter extends ProxyFilterWrapper {
 
   @Override
-  public String filterType() {
-    return FilterConstants.ERROR_TYPE;
-  }
-
-  @Override
-  public int filterOrder() {
-    return 1;
-  }
-
-  @Override
-  public boolean shouldFilter() {
-    return true;
+  public void construct() {
+    super.construct(ErrorFilter.class, FilterConstants.ERROR_TYPE, 1, true);
   }
 
   @Override

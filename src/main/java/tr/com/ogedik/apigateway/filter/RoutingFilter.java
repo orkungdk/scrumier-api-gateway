@@ -5,33 +5,20 @@ package tr.com.ogedik.apigateway.filter;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.netflix.zuul.ZuulFilter;
-import com.netflix.zuul.context.RequestContext;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+
+import com.netflix.zuul.context.RequestContext;
+
+import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
 
 /**
  * @author orkun.gedik
  */
-public class RoutingFilter extends ZuulFilter {
-
-  private static final Logger logger = LogManager.getLogger(RoutingFilter.class);
+public class RoutingFilter extends ProxyFilterWrapper {
 
   @Override
-  public String filterType() {
-    return FilterConstants.ROUTE_TYPE;
-  }
-
-  @Override
-  public int filterOrder() {
-    return 1;
-  }
-
-  @Override
-  public boolean shouldFilter() {
-    return true;
+  public void construct() {
+    super.construct(RoutingFilter.class, FilterConstants.ROUTE_TYPE, 1, true);
   }
 
   @Override

@@ -17,9 +17,6 @@
 //import tr.com.ogedik.apigateway.annotations.Authorities;
 //import tr.com.ogedik.apigateway.annotations.Restricted;
 //import tr.com.ogedik.apigateway.constants.Permission;
-//import tr.com.ogedik.commons.exception.ErrorException;
-//import tr.com.ogedik.commons.exception.constant.ErrorType;
-//import tr.com.ogedik.commons.utils.ListUtils;
 //
 ///**
 // * This class is an abstraction for aspect oriented programming in this project. All micro services should

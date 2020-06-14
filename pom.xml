@@ -20,7 +20,6 @@
 		<org.aspectj.version>1.8.12</org.aspectj.version>
 		<org.projectlombok.version>1.18.12</org.projectlombok.version>
 		<jsonwebtoken.version>0.9.1</jsonwebtoken.version>
-
 	</properties>
 
 	<dependencies>
@@ -49,6 +48,10 @@
 			<groupId>tr.com.ogedik</groupId>
 			<artifactId>commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
