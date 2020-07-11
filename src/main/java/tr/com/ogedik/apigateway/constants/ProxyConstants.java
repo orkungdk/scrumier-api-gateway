@@ -19,21 +19,13 @@ public class ProxyConstants {
     public static final String USER_IS_NOT_ACTIVE = "User is not currently active.";
   }
 
-  public static class Header {
-    public static final String PREFIX = "Bearer ";
-    public static final String AUTH_TOKEN = "X-Auth-Token";
-    public static final String AUTHORITIES = "X-Authorities";
-    public static final String AUTH_USER = "X-Auth-User";
-    public static final String REQUEST_SOURCE = "X-Request-Source";
-  }
-
   public static class Paths {
     public static final String API = "/api";
     public static final String AUTHENTICATE = "/authentication/authenticate";
     public static final String REGISTRATION = "/authentication/users";
-    public static final String JIRA_CONNECTION_TEST = "/configuration/testJiraConnection";
+    public static final String JIRA_CONNECTION_TEST = "/integration/jira/connect";
+    public static final String JIRA_CONFIG = "/configuration/jira";
     public static final String SETUP = "/configuration/setup";
-
   }
 
   public static class Fields {

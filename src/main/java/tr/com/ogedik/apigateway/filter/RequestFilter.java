@@ -5,8 +5,11 @@ package tr.com.ogedik.apigateway.filter;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,17 @@ import org.springframework.util.StringUtils;
 import com.netflix.zuul.context.RequestContext;
 
 import tr.com.ogedik.apigateway.constants.ProxyConstants;
-import tr.com.ogedik.apigateway.exception.ProxyException;
-import tr.com.ogedik.apigateway.exception.error.ProxyError;
+import tr.com.ogedik.apigateway.exception.ApiGatewayException;
+import tr.com.ogedik.apigateway.exception.error.ApiGatewayErrorType;
 import tr.com.ogedik.apigateway.filter.util.PermittedRequestFilter;
 import tr.com.ogedik.apigateway.utils.HttpRequestHelper;
-import tr.com.ogedik.apigateway.utils.TokenConsumer;
 import tr.com.ogedik.apigateway.wrapper.DiscoveryClientWrapper;
 import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
+import tr.com.ogedik.commons.constants.Services;
+import tr.com.ogedik.commons.helper.TokenHelper;
+import tr.com.ogedik.commons.model.Headers;
+import tr.com.ogedik.commons.request.rest.HttpRestClient;
+import tr.com.ogedik.commons.request.rest.helper.RequestURLDetails;
 
 import java.util.Collections;
 
@@ -33,10 +40,9 @@ import java.util.Collections;
 @Component
 public class RequestFilter extends ProxyFilterWrapper {
 
+  @Qualifier("eurekaClient")
   @Autowired
-  private TokenConsumer tokenConsumer;
-  @Autowired
-  private DiscoveryClientWrapper discoveryClientWrapper;
+  private EurekaClient eurekaClient;
 
   @Override
   public void construct() {
@@ -44,10 +50,10 @@ public class RequestFilter extends ProxyFilterWrapper {
   }
 
   @Override
-  public Object run() throws ProxyException {
+  public Object run() throws ApiGatewayException {
     HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
     logger.info("Request has been interrupted by Pre-Request filter. The http method is {}, target is {}", filterType(),
-        request.getMethod(), request.getRequestURL().toString());
+        request.getMethod(), request.getRequestURL());
 
     return PermittedRequestFilter.getInstance().filter(request) ? ignoreFilter(request) : executeFilter(request);
   }
@@ -59,46 +65,49 @@ public class RequestFilter extends ProxyFilterWrapper {
     return null;
   }
 
-  private Object executeFilter(HttpServletRequest request) throws ProxyException {
+  private Object executeFilter(HttpServletRequest request) throws ApiGatewayException {
     String token = extractToken(request);
     doFilterRequest(token);
     authenticateRequest(request);
     return null;
   }
 
-  private void authenticateRequest(HttpServletRequest request) throws ProxyException {
+  private void authenticateRequest(HttpServletRequest request) throws ApiGatewayException {
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-    httpHeaders.add(ProxyConstants.Header.REQUEST_SOURCE, "Api-Gateway");
-    httpHeaders.add(ProxyConstants.Header.AUTH_TOKEN, request.getHeader(ProxyConstants.Header.AUTH_TOKEN));
-    httpHeaders.add(ProxyConstants.Header.AUTH_USER,
-        RequestContext.getCurrentContext().getZuulRequestHeaders().get(ProxyConstants.Header.AUTH_USER.toLowerCase()));
+    httpHeaders.add(Headers.REQUEST_SOURCE, "Api-Gateway");
+    httpHeaders.add(Headers.AUTH_TOKEN, request.getHeader(Headers.AUTH_TOKEN));
+    httpHeaders.add(Headers.AUTH_USER,
+        RequestContext.getCurrentContext().getZuulRequestHeaders().get(Headers.AUTH_USER.toLowerCase()));
 
-    HttpStatus authenticationStatus = HttpRequestHelper.get(httpHeaders,
-        discoveryClientWrapper.getAuthenticationServiceInstance().getHomePageUrl(), ProxyConstants.Paths.AUTHENTICATE);
+    InstanceInfo instanceInfo = eurekaClient.getNextServerFromEureka(Services.AUTHENTICATION, false);
+    RequestURLDetails requestURLDetails = new RequestURLDetails(instanceInfo.getHomePageUrl(),
+            instanceInfo.getVIPAddress(), ProxyConstants.Paths.AUTHENTICATE, null);
 
-    if (authenticationStatus.equals(HttpStatus.UNAUTHORIZED)) {
-      throw new ProxyException(ProxyError.UNAUTHORIZED);
-    }
+    HttpRestClient.doGet(requestURLDetails, httpHeaders, null);
+
+//    if (authenticationStatus.equals(HttpStatus.UNAUTHORIZED)) {
+//      throw new ApiGatewayException(ApiGatewayErrorType.UNAUTHORIZED);
+//    }
   }
 
-  private void doFilterRequest(String token) throws ProxyException {
-    Boolean isTokenExpired = tokenConsumer.isTokenExpired(token);
+  private void doFilterRequest(String token) throws ApiGatewayException {
+    Boolean isTokenExpired = TokenHelper.isTokenExpired(token);
 
     if (BooleanUtils.isFalse(isTokenExpired)) {
-      String username = tokenConsumer.getUsernameFromToken(token);
-      RequestContext.getCurrentContext().addZuulRequestHeader(ProxyConstants.Header.AUTH_USER, username);
+      String username = TokenHelper.getUsernameFromToken(token);
+      RequestContext.getCurrentContext().addZuulRequestHeader(Headers.AUTH_USER, username);
     } else {
-      throw new ProxyException(ProxyError.TOKEN_EXPIRED);
+      throw new ApiGatewayException(ApiGatewayErrorType.TOKEN_EXPIRED);
     }
   }
 
-  private String extractToken(HttpServletRequest request) throws ProxyException {
-    String requestTokenHeader = request.getHeader(ProxyConstants.Header.AUTH_TOKEN);
+  private String extractToken(HttpServletRequest request) throws ApiGatewayException {
+    String requestTokenHeader = request.getHeader(Headers.AUTH_TOKEN);
 
     if (isTokenMissing(requestTokenHeader)) {
-      throw new ProxyException(ProxyError.TOKEN_NOT_FOUND);
+      throw new ApiGatewayException(ApiGatewayErrorType.TOKEN_NOT_FOUND);
     }
     String token = requestTokenHeader.substring(7);
 
@@ -107,6 +116,6 @@ public class RequestFilter extends ProxyFilterWrapper {
 
   private boolean isTokenMissing(String requestTokenHeader) {
     return StringUtils.isEmpty(requestTokenHeader)
-        || !StringUtils.startsWithIgnoreCase(requestTokenHeader, ProxyConstants.Header.PREFIX);
+        || !StringUtils.startsWithIgnoreCase(requestTokenHeader, Headers.PREFIX);
   }
 }
