@@ -1,6 +1,3 @@
-/**
- * © 2020 Copyright Amadeus Unauthorised use and disclosure strictly forbidden.
- */
 package tr.com.ogedik.apigateway.filter;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,17 +13,17 @@ import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
  */
 public class ResponseFilter extends ProxyFilterWrapper {
 
-  @Override
-  public void construct() {
-    super.construct(ResponseFilter.class, FilterConstants.POST_TYPE, 1, true);
-  }
+    @Override
+    public void construct() {
+        super.construct(ResponseFilter.class, FilterConstants.POST_TYPE, 1, true);
+    }
 
-  @Override
-  public Object run() {
-    HttpServletResponse response = RequestContext.getCurrentContext().getResponse();
+    @Override
+    public Object run() {
+        HttpServletResponse response = RequestContext.getCurrentContext().getResponse();
 
-    logger.info("{}: response status is {}.", response.getStatus());
+        logger.info("{}: response status is {}.", response.getStatus());
 
-    return null;
-  }
+        return null;
+    }
 }

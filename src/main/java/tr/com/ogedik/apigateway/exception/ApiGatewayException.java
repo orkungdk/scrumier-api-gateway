@@ -1,6 +1,3 @@
-/**
- * © 2020 Copyright Amadeus Unauthorised use and disclosure strictly forbidden.
- */
 package tr.com.ogedik.apigateway.exception;
 
 import com.netflix.zuul.exception.ZuulException;

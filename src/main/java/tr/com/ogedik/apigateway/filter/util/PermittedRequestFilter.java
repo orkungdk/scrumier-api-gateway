@@ -1,6 +1,3 @@
-/**
- * © 2020 Copyright Amadeus Unauthorised use and disclosure strictly forbidden.
- */
 package tr.com.ogedik.apigateway.filter.util;
 
 import lombok.AllArgsConstructor;
@@ -18,40 +15,40 @@ import java.util.List;
  */
 public class PermittedRequestFilter {
 
-  private static PermittedRequestFilter instance;
-  private List<Matcher> matchers;
+    private static PermittedRequestFilter instance;
+    private List<Matcher> matchers;
 
-  private PermittedRequestFilter() {
-    matchers = new ArrayList<>();
-    matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
-    matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONFIG));
-    matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
-    matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.REGISTRATION));
-    matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONNECTION_TEST));
-    matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.SETUP));
-  }
-
-  public static PermittedRequestFilter getInstance() {
-    if (instance == null) {
-      instance = new PermittedRequestFilter();
+    private PermittedRequestFilter() {
+        matchers = new ArrayList<>();
+        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
+        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONFIG));
+        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
+        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.REGISTRATION));
+        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONNECTION_TEST));
+        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.SETUP));
     }
 
-    return instance;
-  }
+    public static PermittedRequestFilter getInstance() {
+        if (instance == null) {
+            instance = new PermittedRequestFilter();
+        }
 
-  public boolean filter(HttpServletRequest httpServletRequest) {
-    return matchers.stream()
-        .filter(matcher -> httpServletRequest.getRequestURL().toString().contains(matcher.requestPath))
-        .filter(matcher -> httpServletRequest.getMethod().equals(matcher.httpMethod.name()))
-        .findAny()
-        .isPresent();
-  }
+        return instance;
+    }
 
-  @Getter
-  @Setter
-  @AllArgsConstructor
-  class Matcher {
-    private HttpMethod httpMethod;
-    private String requestPath;
-  }
+    public boolean isAuthenticationRequired(HttpServletRequest httpServletRequest) {
+        return !matchers.stream()
+                .filter(matcher -> httpServletRequest.getRequestURL().toString().contains(matcher.requestPath))
+                .filter(matcher -> httpServletRequest.getMethod().equals(matcher.httpMethod.name()))
+                .findAny()
+                .isPresent();
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    class Matcher {
+        private HttpMethod httpMethod;
+        private String requestPath;
+    }
 }
