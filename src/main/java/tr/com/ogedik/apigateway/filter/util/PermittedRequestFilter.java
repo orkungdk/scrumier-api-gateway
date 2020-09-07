@@ -26,6 +26,7 @@ public class PermittedRequestFilter {
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.REGISTRATION));
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONNECTION_TEST));
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.SETUP));
+        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.RETRIEVE_WORKLOGS));
     }
 
     public static PermittedRequestFilter getInstance() {
@@ -37,11 +38,9 @@ public class PermittedRequestFilter {
     }
 
     public boolean isAuthenticationRequired(HttpServletRequest httpServletRequest) {
-        return !matchers.stream()
+        return matchers.stream()
                 .filter(matcher -> httpServletRequest.getRequestURL().toString().contains(matcher.requestPath))
-                .filter(matcher -> httpServletRequest.getMethod().equals(matcher.httpMethod.name()))
-                .findAny()
-                .isPresent();
+                .noneMatch(matcher -> httpServletRequest.getMethod().equals(matcher.httpMethod.name()));
     }
 
     @Getter

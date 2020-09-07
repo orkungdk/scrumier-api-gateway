@@ -34,6 +34,7 @@ public class RequestFilter extends ProxyFilterWrapper {
     @Override
     public Object run() throws ApiGatewayException {
         HttpServletRequest request = RequestContext.getCurrentContext().getRequest();
+        //TODO: Look at what is the problem here?
         logger.info("Request has been interrupted by Pre-Request filter. The http method is {}, target is {}",
                 request.getRequestURL());
 

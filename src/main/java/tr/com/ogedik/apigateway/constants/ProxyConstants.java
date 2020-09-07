@@ -23,6 +23,7 @@ public class ProxyConstants {
     public static final String JIRA_CONNECTION_TEST = "/integration/jira/connect";
     public static final String JIRA_CONFIG = "/configuration/jira";
     public static final String SETUP = "/configuration/setup";
+    public static final String RETRIEVE_WORKLOGS = "/time-tracker/tracker/worklogs";
   }
 
   public static class Fields {
