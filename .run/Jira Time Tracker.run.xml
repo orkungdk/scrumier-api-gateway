@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Jira Time Tracker" type="CompoundRunConfigurationType">
-    <toRun name="IntegrationApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="tr.com.ogedik.timetracker.TimeTrackerApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ConfigApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="AuthenticationApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ConfigApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="DiscoveryServerApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="IntegrationApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="TimeTrackerApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="AuthenticationApplication" type="SpringBootApplicationConfigurationType" />
     <method v="2" />
   </configuration>
 </component>
