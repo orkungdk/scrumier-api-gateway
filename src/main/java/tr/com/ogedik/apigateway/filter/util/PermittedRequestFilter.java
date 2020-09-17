@@ -18,6 +18,7 @@ public class PermittedRequestFilter {
     private static PermittedRequestFilter instance;
     private List<Matcher> matchers;
 
+    //TODO: Add token authentication for time tracker paths.
     private PermittedRequestFilter() {
         matchers = new ArrayList<>();
         matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
@@ -26,7 +27,8 @@ public class PermittedRequestFilter {
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.REGISTRATION));
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONNECTION_TEST));
         matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.SETUP));
-        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.RETRIEVE_WORKLOGS));
+        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.WORKLOGS));
+        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.WORKLOGS));
     }
 
     public static PermittedRequestFilter getInstance() {
