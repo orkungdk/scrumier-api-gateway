@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpMethod;
-import tr.com.ogedik.apigateway.constants.ProxyConstants;
+import tr.com.ogedik.apigateway.constants.ApiGatewayConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -21,14 +21,14 @@ public class PermittedRequestFilter {
     //TODO: Add token authentication for time tracker paths.
     private PermittedRequestFilter() {
         matchers = new ArrayList<>();
-        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
-        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONFIG));
-        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.AUTHENTICATE));
-        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.REGISTRATION));
-        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.JIRA_CONNECTION_TEST));
-        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.SETUP));
-        matchers.add(new Matcher(HttpMethod.GET, ProxyConstants.Paths.API + ProxyConstants.Paths.WORKLOGS));
-        matchers.add(new Matcher(HttpMethod.POST, ProxyConstants.Paths.API + ProxyConstants.Paths.WORKLOGS));
+        matchers.add(new Matcher(HttpMethod.GET, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.AUTHENTICATE));
+        matchers.add(new Matcher(HttpMethod.GET, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.JIRA_CONFIG));
+        matchers.add(new Matcher(HttpMethod.POST, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.AUTHENTICATE));
+        matchers.add(new Matcher(HttpMethod.POST, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.REGISTRATION));
+        matchers.add(new Matcher(HttpMethod.POST, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.JIRA_CONNECTION_TEST));
+        matchers.add(new Matcher(HttpMethod.POST, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.SETUP));
+        matchers.add(new Matcher(HttpMethod.GET, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.WORKLOGS));
+        matchers.add(new Matcher(HttpMethod.POST, ApiGatewayConstants.Paths.API + ApiGatewayConstants.Paths.WORKLOGS));
     }
 
     public static PermittedRequestFilter getInstance() {
