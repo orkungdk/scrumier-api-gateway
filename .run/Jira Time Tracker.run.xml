@@ -1,11 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Jira Time Tracker" type="CompoundRunConfigurationType">
-    <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ConfigApplication" type="SpringBootApplicationConfigurationType" />
+  <configuration default="false" name="Scrumier" type="CompoundRunConfigurationType">
     <toRun name="DiscoveryServerApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="IntegrationApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="TimeTrackerApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ConfigApplication" type="SpringBootApplicationConfigurationType" />
     <toRun name="AuthenticationApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" />
+    <toRun name="IntegrationApplication" type="SpringBootApplicationConfigurationType" />
     <method v="2" />
   </configuration>
 </component>
