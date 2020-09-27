@@ -1,0 +1,46 @@
+# Application configuration
+server:
+  port: 8090
+spring:
+  application:
+    name: api-gateway
+
+# Eureka client configuration
+eureka:
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${DISCOVERY_SERVER_HOST:localhost}:${DISCOVERY_SERVER_PORT:8761}/eureka
+ribbon:
+  ConnectTimeout: 100000
+  ReadTimeout: 100000
+  eureka:
+    enabled: true
+
+# Routing
+zuul:
+  host:
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
+  prefix: /api
+  routes:
+    configuration:
+      path: /configuration/*
+      sensitive-headers: ''
+      service-id: configuration
+      strip-prefix: true
+    integration:
+      path: /integration/*
+      sensitive-headers: ''
+      service-id: integration
+      strip-prefix: true
+    timetracker:
+      path: /time-tracker/*
+      sensitive-headers: ''
+      service-id: time-tracker
+      strip-prefix: true
+    users:
+      path: /authentication/*
+      sensitive-headers: ''
+      service-id: authentication
+      strip-prefix: true
