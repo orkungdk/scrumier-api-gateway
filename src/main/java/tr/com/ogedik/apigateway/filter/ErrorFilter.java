@@ -8,11 +8,13 @@ import org.apache.logging.log4j.Logger;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.stereotype.Component;
 import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
 
 /**
  * @author orkun.gedik
  */
+@Component
 public class ErrorFilter extends ProxyFilterWrapper {
 
     @Override

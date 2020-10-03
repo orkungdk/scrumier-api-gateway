@@ -6,11 +6,13 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
 import com.netflix.zuul.context.RequestContext;
 
+import org.springframework.stereotype.Component;
 import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
 
 /**
  * @author orkun.gedik
  */
+@Component
 public class ResponseFilter extends ProxyFilterWrapper {
 
     @Override
