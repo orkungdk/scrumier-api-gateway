@@ -6,7 +6,10 @@ spring:
     name: api-gateway
 
 # Eureka client configuration
+
 eureka:
+  instance:
+    preferIpAddress: true
   client:
     fetch-registry: true
     service-url:
