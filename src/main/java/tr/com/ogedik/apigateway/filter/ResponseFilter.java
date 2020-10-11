@@ -1,13 +1,11 @@
 package tr.com.ogedik.apigateway.filter;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
-
 import com.netflix.zuul.context.RequestContext;
-
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.stereotype.Component;
 import tr.com.ogedik.apigateway.wrapper.ProxyFilterWrapper;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author orkun.gedik

@@ -3,7 +3,6 @@ package tr.com.ogedik.apigateway.wrapper;
 import com.netflix.zuul.ZuulFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tr.com.ogedik.apigateway.filter.RequestFilter;
 
 import javax.annotation.PostConstruct;
 
